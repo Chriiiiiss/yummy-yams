@@ -17,12 +17,12 @@ services:
   api:
     build: ./api
     ports:
-      - 3001:3001
+      - 3000:3000
     volumes:
       - ./api:/usr/src/api
     environment:
       NODE_ENV: development
-      PORT: 3001
+      PORT: 3000
     depends_on:
       - mongo
 
