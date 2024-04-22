@@ -16,10 +16,7 @@ app.use(
 
 app.use(authRouter);
 
-connectDatabase().then(() => {
-  console.log("Database connected");
-  app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-    console.log(`Environment is ${ENV.NODE_ENV}`);
-  });
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+  console.log(`Environment is ${ENV.NODE_ENV}`);
 });
