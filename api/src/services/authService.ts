@@ -8,10 +8,10 @@ export const loginServices = () => {
 };
 
 export const registerServices = () => {
-  const newUser = new User({ username: "Chris", password: "skjhdskjhk" });
   connectDatabase("users").then(async () => {
     try {
-      await User.create({ username: "Chris", password: "root" });
+      //await User.create({ username: "Chris", password: "root" });
+      console.log("registering");
     } catch (err: any) {
       if (err.name === "MongoServerError" && err.code === 11000) {
         console.log("User already exists");
@@ -20,5 +20,4 @@ export const registerServices = () => {
       }
     }
   });
-  console.log(newUser.username);
 };

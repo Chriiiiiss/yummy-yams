@@ -13,7 +13,7 @@ app.use(
     res.status(500).send("Something broke!");
   }
 );
-
+app.use(express.json());
 app.use(authRouter);
 
 app.listen(PORT, () => {
