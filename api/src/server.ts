@@ -1,11 +1,18 @@
-import express, { Express, Request, Response, NextFunction } from "express";
+import express, {
+  Express,
+  Request,
+  Response,
+  NextFunction,
+  Errback,
+} from "express";
 import authRouter from "./routers/authRouter";
 import ENV from "./config";
 import { connectDatabase } from "./database/database";
+import { HttpError } from "./interfaces/error";
 
 const PORT: number = ENV.PORT;
 
-const app: Express = express();
+export const app: Express = express();
 
 app.use(
   (err: Error, _req: Request, res: Response, _next: NextFunction): void => {
