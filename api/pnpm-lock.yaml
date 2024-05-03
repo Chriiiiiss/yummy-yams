@@ -2391,6 +2391,7 @@ packages:
       is-arrayish: 0.2.1
     dev: true
 
+
   /es-define-property@1.0.0:
     resolution:
       {
@@ -5130,6 +5131,7 @@ packages:
       {
         integrity: sha512-AEYxH93jGFPn/a2iVAwW87VuUIkR1FVUKB77NwMF7nBTDkDrrT/Hpt/IrCJ0QXhW27jTBDcf5ZY7w6RiqTMw2Q==,
       }
+
     dev: false
 
   /tsx@4.7.2:

@@ -10,6 +10,7 @@ import ENV from "./config";
 import { connectDatabase } from "./database/database";
 import { HttpError } from "./interfaces/error";
 
+
 const PORT: number = ENV.PORT;
 
 export const app: Express = express();
