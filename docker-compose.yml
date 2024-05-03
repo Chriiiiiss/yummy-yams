@@ -20,6 +20,7 @@ services:
       - 3000:3000
     volumes:
       - ./api:/usr/src/api
+      - /usr/src/api/node_modules
     environment:
       NODE_ENV: development
       MONGO_URI: mongodb://chris:root@mongo:27017/
