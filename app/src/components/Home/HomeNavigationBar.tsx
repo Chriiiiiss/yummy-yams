@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { colorTheme } from "../../pages/constant";
+import { Color, colorTheme } from "../../pages/constant";
 import { NavigationButton } from "./NavigationButton";
 
 const WrapperNavigationBar = styled.div`
@@ -19,18 +19,17 @@ export const HomeNavigationBar = () => {
     <div className="pixel-corners--wrapper">
       <WrapperNavigationBar>
         <NavigationButton
+          index={0}
           isBigButton={true}
-          color={colorTheme.blue.primary}
+          color={Color.Blue}
           buttonTitle="Play"
         />
+        <NavigationButton index={1} color={Color.Yellow} buttonTitle="OPTION" />
+        <NavigationButton index={2} color={Color.Red} buttonTitle="Quit" />
         <NavigationButton
-          color={colorTheme.yellow.primary}
-          buttonTitle="OPTION"
-        />
-        <NavigationButton color={colorTheme.red.primary} buttonTitle="Quit" />
-        <NavigationButton
+          index={3}
           isBigButton={true}
-          color={colorTheme.green.primary}
+          color={Color.Green}
           buttonTitle="Collection"
         />
       </WrapperNavigationBar>
