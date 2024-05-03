@@ -1,14 +1,22 @@
 import styled from "@emotion/styled";
+import { Title } from "../components/Title";
+import { HomeNavigationBar } from "../components/Home/HomeNavigationBar";
 
 const AppWrapper = styled.div`
-  background-color: red;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  flex-direction: column;
+  gap: 200px;
 `;
 
 function Home() {
   return (
     <AppWrapper>
-      <h1>Home</h1>
-      <p>This is the home page.</p>
+      <Title children={"YUMMY YAMS"} fontSize="90" isHomeTitle={true} />
+      <HomeNavigationBar />
     </AppWrapper>
   );
 }

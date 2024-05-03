@@ -23,7 +23,7 @@ const CrtFilter = styled.div`
   mix-blend-mode: multiply;
   z-index: 100;
   pointer-events: none;
-  opacity: 0.3;
+  opacity: 0.5;
 `;
 
 const ScanLineFilter = styled.div`
@@ -36,14 +36,14 @@ const ScanLineFilter = styled.div`
   mix-blend-mode: multiply;
   z-index: 99;
   pointer-events: none;
-  opacity: 0.6;
+  opacity: 0.5;
 `;
 
 export const Route = createRootRoute({
   component: () => (
     <AppWrapper>
-      {<CrtFilter />}
-      {<ScanLineFilter />}
+      <CrtFilter />
+      <ScanLineFilter />
       <Outlet />
       <TanStackRouterDevtools />
     </AppWrapper>
