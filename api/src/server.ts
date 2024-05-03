@@ -1,11 +1,19 @@
-import express, { Express, Request, Response, NextFunction } from "express";
+import express, {
+  Express,
+  Request,
+  Response,
+  NextFunction,
+  Errback,
+} from "express";
 import authRouter from "./routers/authRouter";
 import ENV from "./config";
 import { connectDatabase } from "./database/database";
+import { HttpError } from "./interfaces/error";
+
 
 const PORT: number = ENV.PORT;
 
-const app: Express = express();
+export const app: Express = express();
 
 app.use(
   (err: Error, _req: Request, res: Response, _next: NextFunction): void => {
@@ -13,13 +21,10 @@ app.use(
     res.status(500).send("Something broke!");
   }
 );
-
+app.use(express.json());
 app.use(authRouter);
 
-connectDatabase().then(() => {
-  console.log("Database connected");
-  app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-    console.log(`Environment is ${ENV.NODE_ENV}`);
-  });
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+  console.log(`Environment is ${ENV.NODE_ENV}`);
 });
