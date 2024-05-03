@@ -1,10 +1,10 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
-import { theme } from "../../pages/constant";
+import { colorTheme } from "../../pages/constant";
 
 interface IButtonWrapperProps {
   isBigButton?: boolean;
-  color?: theme;
+  color?: string;
   buttonTitle: string;
 }
 
@@ -14,7 +14,7 @@ const ButtonWrapper = styled.div<
 >`
   height: 100%;
   width: 100%;
-  background-color: var(${({ color }) => color || theme.white});
+  background-color: var(${({ color }) => color || colorTheme.white.primary});
   border-radius: 15px;
   display: flex;
   align-items: center;
@@ -34,14 +34,14 @@ const ButtonDropShadowWrapper = styled.div<
           width: 20%;
         `}
   height: 80%;
-  filter: drop-shadow(0px 5px 0px var(${theme.grayDark}));
+  filter: drop-shadow(0px 5px 0px var(${colorTheme.gray.secondary}));
   display: flex;
   align-items: center;
   justify-content: center;
 `;
 
 const ButtonTitle = styled.span<Pick<IButtonWrapperProps, "isBigButton">>`
-  color: var(${theme.white});
+  color: var(${colorTheme.white.primary});
   font-family: "Balatro";
   font-size: ${({ isBigButton }) => (isBigButton ? css`40px` : css`32px`)};
 `;

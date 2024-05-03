@@ -1,9 +1,9 @@
 import styled from "@emotion/styled";
-import { theme } from "../../pages/constant";
+import { colorTheme } from "../../pages/constant";
 import { NavigationButton } from "./NavigationButton";
 
 const WrapperNavigationBar = styled.div`
-  background-color: var(${theme.gray});
+  background-color: var(${colorTheme.gray.primary});
   width: 80vw;
   height: 15vh;
   border-radius: 10px;
@@ -20,14 +20,17 @@ export const HomeNavigationBar = () => {
       <WrapperNavigationBar>
         <NavigationButton
           isBigButton={true}
-          color={theme.blue}
+          color={colorTheme.blue.primary}
           buttonTitle="Play"
         />
-        <NavigationButton color={theme.yellow} buttonTitle="OPTION" />
-        <NavigationButton color={theme.red} buttonTitle="Quit" />
+        <NavigationButton
+          color={colorTheme.yellow.primary}
+          buttonTitle="OPTION"
+        />
+        <NavigationButton color={colorTheme.red.primary} buttonTitle="Quit" />
         <NavigationButton
           isBigButton={true}
-          color={theme.green}
+          color={colorTheme.green.primary}
           buttonTitle="Collection"
         />
       </WrapperNavigationBar>
