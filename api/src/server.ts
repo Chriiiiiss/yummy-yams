@@ -1,15 +1,6 @@
-import express, {
-  Express,
-  Request,
-  Response,
-  NextFunction,
-  Errback,
-} from "express";
+import express, { Express, Request, Response, NextFunction } from "express";
 import authRouter from "./routers/authRouter";
 import ENV from "./config";
-import { connectDatabase } from "./database/database";
-import { HttpError } from "./interfaces/error";
-
 
 const PORT: number = ENV.PORT;
 

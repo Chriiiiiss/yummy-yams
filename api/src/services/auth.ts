@@ -5,7 +5,23 @@ import bcrypt from "bcrypt";
 
 import { Response } from "express";
 
-export const loginServices = async () => {
+export const loginServices = async (res: Response, userPayload: IUser) => {
+  connectDatabase("users").then(async () => {
+    try {
+      User.findOne({ username: userPayload.username }).then(async (user) => {
+        if (!user) return res.status(404).send("User not found");
+        const isPasswordValid = await bcrypt.compare(
+          userPayload.password,
+          user.password
+        );
+
+        if (!isPasswordValid) return res.status(401).send("Invalid password");
+        return res.status(200).send("Logged in");
+      });
+    } catch (err: any) {
+      console.log(err);
+    }
+  });
   console.log("Login services works!");
 };
 
