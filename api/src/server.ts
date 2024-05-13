@@ -1,10 +1,13 @@
 import express, { Express, Request, Response, NextFunction } from "express";
 import authRouter from "./routers/authRouter";
 import ENV from "./config";
+import cors from "cors";
 
 const PORT: number = ENV.PORT;
 
 export const app: Express = express();
+
+app.use(cors({ origin: "*" }));
 
 app.use(
   (err: Error, _req: Request, res: Response, _next: NextFunction): void => {
