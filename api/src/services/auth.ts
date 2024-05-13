@@ -1,9 +1,11 @@
+import ENV from "../config";
 import { connectDatabase } from "../database/database";
 import { IUser } from "../interfaces/user";
 import User from "../models/userModel";
 import bcrypt from "bcrypt";
 
 import { Response } from "express";
+import jwt from "jsonwebtoken";
 
 export const loginServices = async (res: Response, userPayload: IUser) => {
   connectDatabase("users").then(async () => {
@@ -16,7 +18,16 @@ export const loginServices = async (res: Response, userPayload: IUser) => {
         );
 
         if (!isPasswordValid) return res.status(401).send("Invalid password");
-        return res.status(200).send("Logged in");
+
+        const jwtToken = jwt.sign(
+          { username: user.username, admin: false },
+          ENV.JWT_SECRET,
+          {
+            expiresIn: "1h",
+          }
+        );
+
+        return res.status(200).send({ token: jwtToken });
       });
     } catch (err: any) {
       console.log(err);
