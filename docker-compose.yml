@@ -25,6 +25,7 @@ services:
       NODE_ENV: development
       MONGO_URI: mongodb://chris:root@mongo:27017/
       PORT: 3000
+      JWT_SECRET: jesuisuneclefvraimenttreslongueetsupersecrete
     depends_on:
       - mongo
 
