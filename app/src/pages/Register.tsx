@@ -7,6 +7,7 @@ export const Register = () => {
     defaultValues: {
       username: "",
       password: "",
+      email: "",
     },
     onSubmit: ({ value }) => {
       register.mutate(value);
@@ -23,6 +24,23 @@ export const Register = () => {
           registerForm.handleSubmit();
         }}
       >
+        <registerForm.Field
+          name="email"
+          children={(field) => {
+            return (
+              <>
+                <label htmlFor={field.name}>{field.name}</label>
+                <input
+                  name={field.name}
+                  value={field.state.value}
+                  onBlur={field.handleBlur}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                  placeholder={field.name}
+                />
+              </>
+            );
+          }}
+        />
         <registerForm.Field
           name="username"
           children={(field) => {

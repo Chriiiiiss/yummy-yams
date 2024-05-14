@@ -1,26 +1,37 @@
 import { useForm } from "@tanstack/react-form";
 import { useLogUserIn } from "../hooks/authHooks";
+import styled from "@emotion/styled";
+import { toast } from "react-hot-toast";
+import { useUserStore } from "../hooks/useAuth";
+
+const BackgroundTest = styled.div`
+  background-color: aliceblue;
+`;
 
 export const Login = () => {
-  console.log(import.meta.env.VITE_API_URL);
   const logUserIn = useLogUserIn();
+  const { setToken, setIsConnected } = useUserStore();
 
   const authForm = useForm({
     defaultValues: {
-      username: "",
+      email: "",
       password: "",
     },
     onSubmit: ({ value }) => {
-      console.log("onSubmit", value);
       logUserIn.mutate(value, {
         onSuccess: (data) => {
-          console.log(data);
+          toast.success("Logged in");
+          setToken(data.token as string);
+          setIsConnected(true);
+        },
+        onError: (error) => {
+          toast.error(error.message);
         },
       });
     },
   });
   return (
-    <div>
+    <BackgroundTest>
       <h1>Login</h1>
       <form
         onSubmit={(e) => {
@@ -31,10 +42,20 @@ export const Login = () => {
       >
         <div>
           <authForm.Field
-            name="username"
+            name="email"
+            validators={{
+              onSubmit: (value) => {
+                console.log("onBlur", value);
+                if (!value.value) return "Email is required";
+                if (!value.value.includes("@")) return "Email is invalid";
+              },
+            }}
             children={(field) => (
               <>
                 <label htmlFor={field.name}>{field.name}</label>
+                {field.state.meta.errors.length >= 1 && (
+                  <p>{field.state.meta.errors}</p>
+                )}
                 <input
                   name={field.name}
                   value={field.state.value}
@@ -47,9 +68,19 @@ export const Login = () => {
           ></authForm.Field>
           <authForm.Field
             name="password"
+            validators={{
+              onSubmit: ({ value }) => {
+                if (!value) return "Password is required";
+                if (value.length < 12)
+                  return "Password must be at least 12 characters";
+              },
+            }}
             children={(field) => (
               <>
                 <label htmlFor={field.name}>{field.name}</label>
+                {field.state.meta.errors.length >= 1 && (
+                  <p>{field.state.meta.errors}</p>
+                )}
                 <input
                   name={field.name}
                   value={field.state.value}
@@ -64,6 +95,6 @@ export const Login = () => {
         </div>
         <button type="submit">Submit</button>
       </form>
-    </div>
+    </BackgroundTest>
   );
 };
