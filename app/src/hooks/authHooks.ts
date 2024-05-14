@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { loggingIn } from "../api/auth";
+import { loggingIn, registerUser } from "../api/auth";
 import {
   IAuthResponse,
   IConnectionPayload,
@@ -8,5 +8,11 @@ import {
 export const useLogUserIn = () => {
   return useMutation<IAuthResponse, Error, IConnectionPayload>({
     mutationFn: loggingIn,
+  });
+};
+
+export const useRegister = () => {
+  return useMutation<IAuthResponse, Error, IConnectionPayload>({
+    mutationFn: registerUser,
   });
 };

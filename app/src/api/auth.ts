@@ -22,3 +22,15 @@ export const loggingIn = async (
 
   return data;
 };
+
+export const registerUser = async (registerPayload: IConnectionPayload) => {
+  const response = await fetch(import.meta.env.VITE_API_URL + "/register", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(registerPayload),
+  });
+
+  return await response.json();
+};
