@@ -14,7 +14,7 @@ export const handleLogin = (req: Request, res: Response) => {
     return res.status(400).json({ errors: validationErrors });
   }
   authService.loginServices(res, {
-    username: req.body.username,
+    email: req.body.email,
     password: req.body.password,
   });
 };
@@ -32,5 +32,6 @@ export const handleRegister = (req: Request, res: Response) => {
   authService.registerServices(res, {
     username: req.body.username,
     password: req.body.password,
+    email: req.body.email,
   });
 };

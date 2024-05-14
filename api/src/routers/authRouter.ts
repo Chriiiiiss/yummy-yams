@@ -6,7 +6,9 @@ const authRouter = Router();
 
 authRouter.post(
   "/login",
-  body("username")
+  body("email")
+    .notEmpty()
+    .withMessage("email is required")
     .isEmail()
     .normalizeEmail({ gmail_remove_dots: false })
     .withMessage("username must be a e-mail"),
@@ -19,12 +21,17 @@ authRouter.post(
 authRouter.post(
   "/register",
   body("username")
-    .isEmail()
-    .normalizeEmail({ gmail_remove_dots: false })
-    .withMessage("username must be a e-mail"),
+    .isLength({ min: 4 })
+    .withMessage("username length must be at least 4 chars long"),
   body("password")
     .isLength({ min: 12 })
     .withMessage("password must be at least 12 chars long"),
+  body("email")
+    .notEmpty()
+    .withMessage("email is required")
+    .isEmail()
+    .normalizeEmail({ gmail_remove_dots: false })
+    .withMessage("email must be a e-mail"),
   handleRegister
 );
 
