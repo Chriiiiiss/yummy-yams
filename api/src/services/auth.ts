@@ -12,11 +12,9 @@ export const loginServices = async (
   userPayload: Pick<IUser, "email" | "password">
 ) => {
   connectDatabase("users").then(async () => {
-    console.log(userPayload);
     try {
       User.findOne({ email: userPayload.email }).then(async (user) => {
-        if (!user) return res.status(404).send("User not found");
-        console.log(user);
+        if (!user) return res.status(404).send({ message: "User not found" });
         const isPasswordValid = await bcrypt.compare(
           userPayload.password,
           user.password
@@ -24,19 +22,27 @@ export const loginServices = async (
 
         console.log(await bcrypt.compare(userPayload.password, user.password));
 
-        if (!isPasswordValid) return res.status(401).send("Invalid password");
+        if (!isPasswordValid)
+          return res.status(401).send({ message: "Invalid password" });
 
-        const jwtToken = jwt.sign({ username: user.username }, ENV.JWT_SECRET, {
-          expiresIn: "1h",
-        });
+        const jwtToken = jwt.sign(
+          {
+            username: user.username,
+            partyLeft: user.partyLeft,
+            userId: user._id,
+          },
+          ENV.JWT_SECRET,
+          {
+            expiresIn: "1h",
+          }
+        );
 
-        return res.status(200).send({ token: jwtToken });
+        return res.status(200).send({ token: jwtToken, message: "Logged in" });
       });
     } catch (err: any) {
-      console.log(err);
+      return res.status(500).send({ message: "Internal server error" });
     }
   });
-  console.log("Login services works!");
 };
 
 async function encryptPassword(password: string) {
@@ -52,12 +58,12 @@ export const registerServices = (res: Response, userPayload: IUser) => {
         userPayload.password = hashedPassword;
       });
       await User.create(userPayload);
-      res.status(200).send("Registered");
+      res.status(200).send({ message: "User created" });
     } catch (err: any) {
       if (err.name === "MongoServerError" && err.code === 11000) {
-        res.status(409).send("Email or Username already exists");
+        res.status(409).send({ message: "Email or Username already exists" });
       } else {
-        res.status(500).send("Internal server error");
+        res.status(500).send({ message: "Internal server error" });
       }
     }
   });
