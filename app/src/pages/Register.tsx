@@ -2,13 +2,6 @@ import { useForm } from "@tanstack/react-form";
 import { useRegister } from "../hooks/authHooks";
 
 export const Register = () => {
-  console.log([
-    Math.floor(Math.random() * 6 + 1),
-    Math.floor(Math.random() * 6 + 1),
-    Math.floor(Math.random() * 6 + 1),
-    Math.floor(Math.random() * 6 + 1),
-    Math.floor(Math.random() * 6 + 1),
-  ]);
   const register = useRegister();
   const registerForm = useForm({
     defaultValues: {
