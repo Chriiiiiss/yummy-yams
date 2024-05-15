@@ -3,6 +3,7 @@ import authRouter from "./routers/authRouter";
 import ENV from "./config";
 import cors from "cors";
 import userRouter from "./routers/userRouter";
+import { gameRouter } from "./routers/gameRouter";
 
 const PORT: number = ENV.PORT;
 
@@ -19,6 +20,7 @@ app.use(
 );
 app.use("/auth", authRouter);
 app.use("/user", userRouter);
+app.use("/game", gameRouter);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
