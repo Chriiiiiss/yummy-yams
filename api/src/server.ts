@@ -23,5 +23,4 @@ app.use("/user", userRouter);
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
   console.log(`Environment is ${ENV.NODE_ENV}`);
-  console.log(`secret JWT Key is ${ENV.JWT_SECRET}`);
 });

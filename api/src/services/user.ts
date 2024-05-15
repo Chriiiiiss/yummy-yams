@@ -11,7 +11,6 @@ export const getUserService = (decodedToken: DecodedJwt, res: Response) => {
         return res.status(200).send({
           username: user.username,
           partyLeft: user.partyLeft,
-          userId: user._id,
           prizesWon: user.prizesWon,
         });
       });

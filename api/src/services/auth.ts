@@ -20,8 +20,6 @@ export const loginServices = async (
           user.password
         );
 
-        console.log(await bcrypt.compare(userPayload.password, user.password));
-
         if (!isPasswordValid)
           return res.status(401).send({ message: "Invalid password" });
 
