@@ -3,6 +3,7 @@ import { Color, colorTheme } from "../../pages/constant";
 import { NavigationButton } from "./NavigationButton";
 import { useUserStore } from "../../hooks/useAuth";
 import { useNavigate } from "@tanstack/react-router";
+import { useLaunchGame } from "../../hooks/useGame";
 
 const WrapperNavigationBar = styled.div`
   background-color: var(${colorTheme.gray.primary});
@@ -17,17 +18,21 @@ const WrapperNavigationBar = styled.div`
 `;
 
 export const HomeNavigationBar = () => {
-  const { reset, isConnected } = useUserStore();
+  const { reset, isConnected, token } = useUserStore();
+  const launchGame = useLaunchGame();
   const navigate = useNavigate();
   return (
     <div className="pixel-corners--wrapper">
       <WrapperNavigationBar>
-        {isConnected ? (
+        {isConnected && token ? (
           <NavigationButton
             index={0}
             color={Color.Blue}
             isBigButton={true}
             buttonTitle="Play"
+            onClick={() => {
+              launchGame.mutate({ token: token });
+            }}
           />
         ) : (
           <NavigationButton
