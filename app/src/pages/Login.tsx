@@ -2,7 +2,9 @@ import { useForm } from "@tanstack/react-form";
 import { useLogUserIn } from "../hooks/authHooks";
 import styled from "@emotion/styled";
 import { toast } from "react-hot-toast";
-import { useUserStore } from "../hooks/useAuth";
+import { useGetUserData, useUserStore } from "../hooks/useAuth";
+import { useEffect } from "react";
+import { useNavigate } from "@tanstack/react-router";
 
 const BackgroundTest = styled.div`
   background-color: aliceblue;
@@ -10,7 +12,27 @@ const BackgroundTest = styled.div`
 
 export const Login = () => {
   const logUserIn = useLogUserIn();
-  const { setToken, setIsConnected } = useUserStore();
+  const navigate = useNavigate();
+  const {
+    setToken,
+    setIsConnected,
+    token,
+    setUsername,
+    setPartyLeft,
+    setPrizeWon,
+  } = useUserStore();
+  const { data } = useGetUserData(token);
+
+  useEffect(() => {
+    if (data) {
+      setIsConnected(true);
+      setUsername(data.username);
+      setPartyLeft(data.partyLeft);
+      setPrizeWon(data.prizesWon);
+      navigate({ to: "/" });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
 
   const authForm = useForm({
     defaultValues: {
@@ -22,7 +44,6 @@ export const Login = () => {
         onSuccess: (data) => {
           toast.success("Logged in");
           setToken(data.token as string);
-          setIsConnected(true);
         },
         onError: (error) => {
           toast.error(error.message);

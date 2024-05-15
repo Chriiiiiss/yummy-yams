@@ -4,9 +4,11 @@ import { Color, colorTheme } from "../../pages/constant";
 
 interface IButtonWrapperProps {
   isBigButton?: boolean;
-  color: Color;
+  color?: Color;
   buttonTitle: string;
   index: number;
+  onClick?: () => void;
+  isDisabled?: boolean;
 }
 
 // Navigation container should contain maximum 4 buttons 2 big and 2 medium
@@ -16,7 +18,8 @@ const ButtonWrapper = styled.div<
   height: 100%;
   width: 100%;
   background-color: var(
-    ${({ color }) => colorTheme[color].primary || colorTheme.white.primary}
+    ${({ color }) =>
+      color ? colorTheme[color].primary : colorTheme.white.secondary}
   );
   border-radius: 15px;
   display: flex;
@@ -24,16 +27,21 @@ const ButtonWrapper = styled.div<
   justify-content: center;
   &:hover {
     background-color: var(
-      ${({ color }) =>
-        colorTheme[color].secondary
-          ? colorTheme[color].secondary
-          : colorTheme[color].primary}
+      ${({ color }) => {
+        if (color) {
+          return colorTheme[color].secondary
+            ? colorTheme[color].secondary
+            : colorTheme[color].primary;
+        } else {
+          return colorTheme.white.secondary;
+        }
+      }}
     );
   }
 `;
 
-const ButtonDropShadowWrapper = styled.div<
-  Pick<IButtonWrapperProps, "isBigButton" | "index">
+const ButtonDropShadowWrapper = styled.button<
+  Pick<IButtonWrapperProps, "isBigButton" | "index" | "isDisabled">
 >`
   ${({ isBigButton }) =>
     isBigButton
@@ -44,15 +52,18 @@ const ButtonDropShadowWrapper = styled.div<
           width: 20%;
         `}
   height: 80%;
-  filter: ${({ index }) =>
-    index > 2
+  filter: ${({ index, isDisabled }) =>
+    index > 2 && !isDisabled
       ? css`drop-shadow(-2px 5px 0px var(${colorTheme.gray.secondary}))`
       : css`drop-shadow(0px 5px 0px var(${colorTheme.gray.secondary}))`};
   display: flex;
   align-items: center;
   justify-content: center;
   &:active {
-    transform: ${({ index }) => {
+    transform: ${({ index, isDisabled }) => {
+      if (isDisabled) {
+        return css`translateY(0px)`;
+      }
       switch (index) {
         case 0:
           return css`translateY(4px) translateX(4px)`;
@@ -64,7 +75,7 @@ const ButtonDropShadowWrapper = styled.div<
           return css`translateY(4px) translateX(-4px)`;
       }
     }};
-    filter: drop-shadow(0px 0px 0px #000000);
+    filter: drop-shadow(0px 0px 0px var(${colorTheme.gray.secondary}));
   }
 `;
 
@@ -80,9 +91,16 @@ export const NavigationButton = ({
   color,
   buttonTitle,
   index,
+  onClick = () => {},
+  isDisabled = false,
 }: IButtonWrapperProps) => {
   return (
-    <ButtonDropShadowWrapper index={index} isBigButton={isBigButton}>
+    <ButtonDropShadowWrapper
+      onClick={onClick}
+      index={index}
+      isBigButton={isBigButton}
+      isDisabled={isDisabled}
+    >
       <ButtonWrapper
         className="pixelated-buttons"
         isBigButton={isBigButton}

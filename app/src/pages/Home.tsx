@@ -22,15 +22,27 @@ const Overlay = styled.div`
   background-color: rgba(0, 0, 0, 0.7);
 `;
 
+const handleLogout = (reset: () => void) => {
+  reset;
+  window.location.reload();
+};
+
 function Home() {
-  const { isConnected } = useUserStore();
   return (
     <AppWrapper>
-      {isConnected && (
+      {/* {isConnected && (
         <Overlay>
-          <Title children={"Welcome"} fontSize="40" />
+          <Title children={`Welcome ${username}`} fontSize="40" />
+          <button
+            onClick={() => {
+              reset();
+              window.location.reload();
+            }}
+          >
+            Logout
+          </button>
         </Overlay>
-      )}
+      )} */}
       <Title children={"YUMMY YAMS"} fontSize="90" isHomeTitle={true} />
       <HomeNavigationBar />
     </AppWrapper>

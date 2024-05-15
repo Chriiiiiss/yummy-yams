@@ -23,4 +23,5 @@ export interface UserState {
   setUsername: (value: string) => void;
   setPartyLeft: (value: number) => void;
   setPrizeWon: (value: string[]) => void;
+  reset: () => void;
 }
