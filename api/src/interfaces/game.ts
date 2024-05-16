@@ -4,4 +4,5 @@ export interface IGame {
   shotLeft: number;
   isWon: boolean;
   prizeWon: string;
+  savedRoll: number[];
 }

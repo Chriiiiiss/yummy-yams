@@ -27,7 +27,7 @@ export const HomeNavigationBar = () => {
         {isConnected && token ? (
           <NavigationButton
             index={0}
-            color={partyLeft ? Color.Red : undefined}
+            color={partyLeft ? Color.Blue : undefined}
             isBigButton={true}
             buttonTitle="Play"
             onClick={() => {
@@ -80,6 +80,7 @@ export const HomeNavigationBar = () => {
           isBigButton={true}
           color={Color.Green}
           buttonTitle="Classement"
+          onClick={() => navigate({ to: "/ranking" })}
         />
       </WrapperNavigationBar>
     </div>

@@ -103,7 +103,7 @@ export const useFetchGame = (gameId: string) => {
 };
 
 interface ILaunchDicePayload {
-  diceArray: number[];
+  diceArray: boolean[];
 }
 
 interface ILaunchDiceResponse {
@@ -142,10 +142,11 @@ export const useLaunchDice = () => {
   const { token } = useUserStore();
   const queryClient = useQueryClient();
   return useMutation<ILaunchDiceResponse, IGameError, ILaunchDicePayload>({
-    mutationFn: () =>
-      postLaunchDice(token as string, gameId, { diceArray: [1, 2, 3, 4, 5] }),
+    mutationFn: (diceArray) =>
+      postLaunchDice(token as string, gameId, diceArray),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["game"] });
+      queryClient.invalidateQueries({ queryKey: ["user"] });
     },
   });
 };

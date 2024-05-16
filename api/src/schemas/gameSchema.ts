@@ -8,6 +8,7 @@ export const gameSchema = new Schema<IGame>(
     shotLeft: { type: Number, default: 3 },
     isWon: { type: Boolean, default: false },
     prizeWon: { type: String, default: "" },
+    savedRoll: { type: [Number], default: [] },
   },
   { collection: "game" }
 );

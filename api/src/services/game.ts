@@ -44,11 +44,15 @@ const createGameInstance = async (userId: string) => {
 export const fetchGameById = async (gameId: string) => {
   try {
     return await Game.findOne({ _id: gameId }).then((game) => {
+      if (!game) {
+        throw new Error("Game not found");
+      }
       return {
-        id: game?._id,
-        shotLeft: game?.shotLeft,
-        isWon: game?.isWon,
-        prizeWon: game?.prizeWon,
+        id: game._id,
+        shotLeft: game.shotLeft,
+        isWon: game.isWon,
+        prizeWon: game.prizeWon,
+        savedRoll: game.savedRoll,
       };
     });
   } catch (error) {
@@ -119,5 +123,23 @@ export const startGameService = async (token: string, res: Response) => {
   } else {
     console.log("Error creating game...");
     return res.status(500).json({ message: "Error creating game", code: 500 });
+  }
+};
+
+export const saveAndUpdateGameRoll = async (gameId: string, roll: number[]) => {
+  try {
+    return await Game.findOneAndUpdate({ _id: gameId }, { savedRoll: roll });
+  } catch (error) {
+    console.log("Error saving game roll: ", error);
+    throw new Error("Error saving game roll");
+  }
+};
+
+export const setWinToGame = async (gameId: string) => {
+  try {
+    return await Game.findOneAndUpdate({ _id: gameId }, { isWon: true });
+  } catch (error) {
+    console.log("Error setting game win: ", error);
+    throw new Error("Error setting game win");
   }
 };

@@ -2,6 +2,8 @@ import { Response } from "express";
 
 import User from "../models/userModel.ts";
 import { DecodedJwt } from "../types/jwt.ts";
+import { saveWonPastries } from "./pastries.ts";
+import Pastries from "src/models/pastriesModel.ts";
 
 export const getUserService = (decodedToken: DecodedJwt, res: Response) => {
   try {
@@ -44,6 +46,7 @@ export const retrieveUser = async (userId: string) => {
         prizesWon: user.prizesWon,
         currentPartyId: user.currentPartyId,
         email: user.email,
+        _id: user._id,
       };
     });
   } catch (err) {
@@ -62,5 +65,44 @@ export const updateOneUserField = async (
   } catch (err) {
     console.log(`Error updating user ${fieldName}: `, err);
     throw new Error("Error updating user field");
+  }
+};
+
+export const addPastriesToUser = async (userId: string, pastriesId: string) => {
+  console.log(`Adding ${pastriesId} to ${userId}`);
+  try {
+    await User.findOneAndUpdate(
+      { _id: userId },
+      { $push: { prizesWon: pastriesId } }
+    );
+    await saveWonPastries(pastriesId);
+    console.log("Pastries added to user");
+  } catch (err) {
+    console.log("Error adding pastries to user: ", err);
+    throw new Error("Error adding pastries to user");
+  }
+};
+
+export const fetchUserWithPrizesAndPastriesInfo = async () => {
+  try {
+    return await User.where("prizesWon")
+      .ne([])
+      .then(async (users) => {
+        const winners = await Promise.all(
+          users.map(async (user) => {
+            const pastries = await Pastries.find({
+              _id: { $in: user.prizesWon },
+            });
+            return {
+              username: user.username,
+              pastries: pastries,
+            };
+          })
+        );
+        return winners;
+      });
+  } catch (err) {
+    console.log("Error fetching winners: ", err);
+    throw new Error("Error fetching winners");
   }
 };

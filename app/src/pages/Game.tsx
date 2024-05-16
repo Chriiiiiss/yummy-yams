@@ -1,17 +1,11 @@
 import styled from "@emotion/styled";
 import { Title } from "../components/Title";
-import { useNavigate } from "@tanstack/react-router";
-import {
-  useFetchGame,
-  useGameStore,
-  useLaunchDice,
-  useQuitGame,
-} from "../hooks/useGame";
+
+import { useFetchGame, useGameStore } from "../hooks/useGame";
 import { useUserStore } from "../hooks/useAuth";
 import { useEffect } from "react";
-import { NavigationButton } from "../components/Home/NavigationButton";
-import { Color } from "./constant";
-import { useQueryClient } from "@tanstack/react-query";
+
+import { Dice } from "../components/Dice.tsx";
 
 const AppWrapper = styled.div`
   display: flex;
@@ -23,37 +17,14 @@ const AppWrapper = styled.div`
   gap: 200px;
 `;
 
-const ButtonWrapper = styled.div`
+const DiceContainer = styled.div`
   display: flex;
-  width: 50vw;
-  height: 13vh;
-  justify-content: center;
 `;
 
 export const Game = () => {
-  const { currentPartyId, setCurrentPartyId, token } = useUserStore();
-  const { setGameId, setShotLeft, setIsWon, setPrizeWon, shotLeft, reset } =
-    useGameStore();
+  const { currentPartyId } = useUserStore();
+  const { setGameId, setShotLeft, setIsWon, setPrizeWon } = useGameStore();
   const { data, isLoading } = useFetchGame(currentPartyId);
-  const navigate = useNavigate();
-  const launchDice = useLaunchDice();
-  const quitGame = useQuitGame();
-  const queryClient = useQueryClient();
-
-  const handleLaunchDice = () => {
-    launchDice.mutate({ diceArray: [1, 2, 3, 4, 5] });
-  };
-
-  const handleQuitGame = () => {
-    quitGame.mutate(token as string, {
-      onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ["user"] }).then(() => {
-          reset();
-          navigate({ to: "/" });
-        });
-      },
-    });
-  };
 
   useEffect(() => {
     if (data) {
@@ -69,32 +40,9 @@ export const Game = () => {
   ) : (
     <AppWrapper>
       <Title children={data?.shotLeft} fontSize="80" isHomeTitle></Title>
-      <button
-        onClick={() => {
-          navigate({ to: "/" });
-        }}
-      >
-        Retour
-      </button>
-      <ButtonWrapper>
-        {shotLeft ? (
-          <NavigationButton
-            color={Color.Blue}
-            index={2}
-            buttonTitle="Launch Dice"
-            onClick={handleLaunchDice}
-          />
-        ) : (
-          <NavigationButton
-            color={Color.Red}
-            index={2}
-            buttonTitle="Quit Game"
-            onClick={() => {
-              handleQuitGame();
-            }}
-          />
-        )}
-      </ButtonWrapper>
+      <DiceContainer>
+        <Dice />
+      </DiceContainer>
     </AppWrapper>
   );
 };

@@ -2,8 +2,12 @@ import { Request, Response } from "express";
 import jwt, { JsonWebTokenError } from "jsonwebtoken";
 import ENV from "../config.ts";
 import { DecodedJwt } from "../types/jwt.ts";
-import { getUserService } from "../services/user.ts";
+import {
+  fetchUserWithPrizesAndPastriesInfo,
+  getUserService,
+} from "../services/user.ts";
 import mongoose from "mongoose";
+import { findInStockPastries } from "src/services/pastries.ts";
 
 export const handleFetchUserInfo = (req: Request, res: Response) => {
   try {
@@ -18,4 +22,19 @@ export const handleFetchUserInfo = (req: Request, res: Response) => {
     }
     return res.status(401).json({ message: "Invalid token" });
   }
+};
+
+export const handleFetchUserForRanking = async (
+  req: Request,
+  res: Response
+) => {
+  console.log("Fetching ranking");
+
+  const winners = await fetchUserWithPrizesAndPastriesInfo();
+  res.status(200).json(winners);
+};
+
+export const sendPastryImg = async (req: Request, res: Response) => {
+  const imgUrl = req.params.imgUrl;
+  res.sendFile(imgUrl, { root: "public" });
 };
