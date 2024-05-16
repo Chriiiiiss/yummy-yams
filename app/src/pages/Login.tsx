@@ -20,6 +20,7 @@ export const Login = () => {
     setUsername,
     setPartyLeft,
     setPrizeWon,
+    setCurrentPartyId,
   } = useUserStore();
   const { data } = useGetUserData(token);
 
@@ -29,6 +30,7 @@ export const Login = () => {
       setUsername(data.username);
       setPartyLeft(data.partyLeft);
       setPrizeWon(data.prizesWon);
+      setCurrentPartyId(data.currentPartyId);
       navigate({ to: "/" });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

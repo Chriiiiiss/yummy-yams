@@ -4,9 +4,11 @@
   "description": "Je sais pas frere",
   "scripts": {
     "test": "jest",
-    "dev": "nodemon ./src/server.ts"
+    "dev": "tsx --watch ./src/server.ts"
   },
   "keywords": [],
+  "type": "module",
+  "target": "ES2022",
   "author": "",
   "license": "ISC",
   "devDependencies": {

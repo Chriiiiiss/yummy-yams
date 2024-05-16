@@ -21,6 +21,7 @@ const initialState = {
   partyLeft: 0,
   prizeWon: [],
   isConnected: false,
+  currentPartyId: "",
 };
 
 export const useUserStore = create<UserState>()(
@@ -29,6 +30,7 @@ export const useUserStore = create<UserState>()(
       (set) => ({
         ...initialState,
         setIsConnected: (value: boolean) => set({ isConnected: value }),
+        setCurrentPartyId: (value: string) => set({ currentPartyId: value }),
         setToken: (value: string) => set({ token: value }),
         setUsername: (value: string) => set({ username: value }),
         setPartyLeft: (value: number) => set({ partyLeft: value }),

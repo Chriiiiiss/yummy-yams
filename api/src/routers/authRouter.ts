@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { handleLogin, handleRegister } from "../controllers/authController";
+import { handleLogin, handleRegister } from "../controllers/authController.ts";
 import { body } from "express-validator";
 
 const authRouter = Router();

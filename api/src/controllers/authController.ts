@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
 import { validationResult } from "express-validator";
 
-import * as authService from "../services/auth";
+import * as authService from "../services/auth.ts";
+import mongoose from "mongoose";
 
 export const handleLogin = (req: Request, res: Response) => {
   const validationErrorsResult = validationResult(req);

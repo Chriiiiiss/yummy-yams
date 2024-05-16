@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { handleFetchUserInfo } from "../controllers/userController";
+import { handleFetchUserInfo } from "../controllers/userController.ts";
 
 const userRouter = Router();
 

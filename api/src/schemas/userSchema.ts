@@ -1,5 +1,5 @@
 import { Schema } from "mongoose";
-import { IUser } from "../interfaces/user";
+import { IUser } from "../interfaces/user.ts";
 
 const userSchema = new Schema<IUser>(
   {
@@ -8,6 +8,7 @@ const userSchema = new Schema<IUser>(
     password: { type: String, required: true, minlength: 12 },
     partyLeft: { type: Number, default: 3 },
     prizesWon: { type: Array, default: [] },
+    currentPartyId: { type: String, default: "" },
   },
   { collection: "user" }
 );

@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import ENV from "../config";
+import ENV from "../config.ts";
 
 export const verifyToken = (
   req: Request,
@@ -15,6 +15,6 @@ export const verifyToken = (
   } catch (error) {
     return res
       .status(401)
-      .json({ message: "Invalid or expired token", code: 401 });
+      .json({ message: "Invalid or expired token", code: 42 });
   }
 };

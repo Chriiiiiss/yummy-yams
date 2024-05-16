@@ -18,6 +18,8 @@ export interface UserState {
   partyLeft: number;
   prizeWon: string[];
   isConnected: boolean;
+  currentPartyId: string;
+  setCurrentPartyId: (value: string) => void;
   setIsConnected: (value: boolean) => void;
   setToken: (value: string) => void;
   setUsername: (value: string) => void;
