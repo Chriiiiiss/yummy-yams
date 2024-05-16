@@ -1,11 +1,17 @@
 import styled from "@emotion/styled";
 import { Title } from "../components/Title";
 import { useNavigate } from "@tanstack/react-router";
-import { useFetchGame, useGameStore, useLaunchDice } from "../hooks/useGame";
+import {
+  useFetchGame,
+  useGameStore,
+  useLaunchDice,
+  useQuitGame,
+} from "../hooks/useGame";
 import { useUserStore } from "../hooks/useAuth";
 import { useEffect } from "react";
 import { NavigationButton } from "../components/Home/NavigationButton";
 import { Color } from "./constant";
+import { useQueryClient } from "@tanstack/react-query";
 
 const AppWrapper = styled.div`
   display: flex;
@@ -25,15 +31,28 @@ const ButtonWrapper = styled.div`
 `;
 
 export const Game = () => {
-  const { currentPartyId } = useUserStore();
-  const { setGameId, setShotLeft, setIsWon, setPrizeWon, shotLeft } =
+  const { currentPartyId, setCurrentPartyId, token } = useUserStore();
+  const { setGameId, setShotLeft, setIsWon, setPrizeWon, shotLeft, reset } =
     useGameStore();
   const { data, isLoading } = useFetchGame(currentPartyId);
   const navigate = useNavigate();
   const launchDice = useLaunchDice();
+  const quitGame = useQuitGame();
+  const queryClient = useQueryClient();
 
   const handleLaunchDice = () => {
     launchDice.mutate({ diceArray: [1, 2, 3, 4, 5] });
+  };
+
+  const handleQuitGame = () => {
+    quitGame.mutate(token as string, {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ["user"] }).then(() => {
+          reset();
+          navigate({ to: "/" });
+        });
+      },
+    });
   };
 
   useEffect(() => {
@@ -67,9 +86,12 @@ export const Game = () => {
           />
         ) : (
           <NavigationButton
-            isDisabled={true}
+            color={Color.Red}
             index={2}
-            buttonTitle="Launch Dice"
+            buttonTitle="Quit Game"
+            onClick={() => {
+              handleQuitGame();
+            }}
           />
         )}
       </ButtonWrapper>

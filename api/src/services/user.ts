@@ -33,3 +33,34 @@ export const decreaseUserPartyLeft = async (userId: string, gameId: string) => {
     throw new Error("Error setting party left");
   }
 };
+
+export const retrieveUser = async (userId: string) => {
+  try {
+    return await User.findOne({ _id: userId }).then((user) => {
+      if (!user) return null;
+      return {
+        username: user.username,
+        partyLeft: user.partyLeft,
+        prizesWon: user.prizesWon,
+        currentPartyId: user.currentPartyId,
+        email: user.email,
+      };
+    });
+  } catch (err) {
+    console.log("Error retrieving user: ", err);
+    throw new Error("Error retrieving user");
+  }
+};
+
+export const updateOneUserField = async (
+  userId: string,
+  fieldName: string,
+  value: string
+) => {
+  try {
+    await User.findOneAndUpdate({ _id: userId }, { [fieldName]: value });
+  } catch (err) {
+    console.log(`Error updating user ${fieldName}: `, err);
+    throw new Error("Error updating user field");
+  }
+};

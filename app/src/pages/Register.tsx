@@ -1,8 +1,10 @@
 import { useForm } from "@tanstack/react-form";
 import { useRegister } from "../hooks/authHooks";
+import { useNavigate } from "@tanstack/react-router";
 
 export const Register = () => {
   const register = useRegister();
+  const navigate = useNavigate();
   const registerForm = useForm({
     defaultValues: {
       username: "",
@@ -11,6 +13,7 @@ export const Register = () => {
     },
     onSubmit: ({ value }) => {
       register.mutate(value);
+      navigate({ to: "/" });
     },
   });
 

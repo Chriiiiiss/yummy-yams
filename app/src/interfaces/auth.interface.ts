@@ -1,3 +1,5 @@
+import { QueryClient } from "@tanstack/react-query";
+
 export interface IConnectionPayload {
   email: string;
   password: string;
@@ -26,4 +28,5 @@ export interface UserState {
   setPartyLeft: (value: number) => void;
   setPrizeWon: (value: string[]) => void;
   reset: () => void;
+  fetchUserInfo: (queryClient: QueryClient) => void;
 }

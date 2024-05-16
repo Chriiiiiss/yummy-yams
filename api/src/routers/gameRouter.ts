@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
   handleLaunchDice,
+  handleQuitGame,
   handleStartGame,
 } from "../controllers/gameController.ts";
 import { body } from "express-validator";
@@ -20,3 +21,5 @@ gameRouter.post(
 gameRouter.get("/:gameId", handleFetchGame);
 
 gameRouter.post("/:gameId/launchDice", handleLaunchDice);
+
+gameRouter.post("/quit", handleQuitGame);

@@ -29,7 +29,12 @@ const isUserAbleToStartGame = (user: IUser) => {
 
 const createGameInstance = async (userId: string) => {
   try {
-    return await Game.create({ userId: userId });
+    return await Game.create({
+      userId: userId,
+      shotLeft: 3,
+      isWon: false,
+      prizeWon: 0,
+    });
   } catch (error) {
     console.log("Error creating game instance: ", error);
     throw new Error("Error creating game instance");
@@ -97,12 +102,13 @@ export const startGameService = async (token: string, res: Response) => {
   const game = await createGameInstance(user._id);
 
   if (game) {
-    console.log("Game created...");
+    console.log("Game created...", game);
     try {
       const isUserUpdated = await decreaseUserPartyLeft(
         user._id,
         game._id as unknown as string
       );
+      return res.send({ message: "Game started", ...game });
       if (isUserUpdated) console.log("User party left updated...");
     } catch (error) {
       console.log("Error updating user party left: ", error);
@@ -114,9 +120,4 @@ export const startGameService = async (token: string, res: Response) => {
     console.log("Error creating game...");
     return res.status(500).json({ message: "Error creating game", code: 500 });
   }
-  // console.log("Starting game...");
-
-  res.send({ message: "Game started" });
-
-  // Start the game
 };

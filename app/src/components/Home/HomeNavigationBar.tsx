@@ -18,7 +18,7 @@ const WrapperNavigationBar = styled.div`
 `;
 
 export const HomeNavigationBar = () => {
-  const { reset, isConnected, token } = useUserStore();
+  const { reset, isConnected, token, partyLeft } = useUserStore();
   const launchGame = useLaunchGame();
   const navigate = useNavigate();
   return (
@@ -27,7 +27,7 @@ export const HomeNavigationBar = () => {
         {isConnected && token ? (
           <NavigationButton
             index={0}
-            color={Color.Blue}
+            color={partyLeft ? Color.Red : undefined}
             isBigButton={true}
             buttonTitle="Play"
             onClick={() => {
@@ -62,14 +62,17 @@ export const HomeNavigationBar = () => {
             buttonTitle="Login"
           />
         )}
-        {isConnected ? (
+        {!isConnected ? (
           <NavigationButton
             index={1}
             color={Color.Yellow}
-            buttonTitle="OPTION"
+            buttonTitle="Register"
+            onClick={() => {
+              navigate({ to: "/register" });
+            }}
           />
         ) : (
-          <NavigationButton index={1} isDisabled buttonTitle="OPTION" />
+          <NavigationButton index={1} isDisabled buttonTitle="Register" />
         )}
 
         <NavigationButton

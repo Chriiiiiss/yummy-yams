@@ -10,8 +10,6 @@ export const useGetUserData = (token: string | null) => {
     queryKey: ["user", token],
     queryFn: () => fetchUserInfo(token as string),
     enabled: !!token,
-    retry: 2,
-    staleTime: 1000 * 60 * 60,
   });
 };
 
@@ -36,6 +34,9 @@ export const useUserStore = create<UserState>()(
         setPartyLeft: (value: number) => set({ partyLeft: value }),
         setPrizeWon: (value: string[]) => set({ prizeWon: value }),
         reset: () => set({ ...initialState }),
+        fetchUserInfo: (queryClient) => {
+          queryClient.invalidateQueries({ queryKey: ["user"] });
+        },
       }),
       { name: "user" }
     )

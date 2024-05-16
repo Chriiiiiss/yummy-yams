@@ -7,3 +7,11 @@ export interface IUser {
   _id: string;
   currentPartyId?: string;
 }
+
+export interface IUserTokenDecoded {
+  username: string;
+  partyLeft: number;
+  userId: string;
+  iat: number;
+  exp: number;
+}

@@ -14,7 +14,7 @@ import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 
 const initialGameState = {
-  shotLeft: 0,
+  shotLeft: 3,
   isWon: false,
   prizeWon: "",
   gameId: "",
@@ -44,10 +44,12 @@ const setGameState = (data: Partial<IGameState>) => {
 export const useLaunchGame = () => {
   const navigate = useNavigate();
   const { reset } = useUserStore();
+  const queryClient = useQueryClient();
   return useMutation<IStartGameResponse, IGameError, IStartGamePayload>({
     mutationFn: startGame,
     onSuccess: (data) => {
       console.log("Game started", data);
+      queryClient.invalidateQueries({ queryKey: ["user"] });
       setGameState(data);
       navigate({ to: "/game" });
     },
@@ -72,6 +74,7 @@ export const useLaunchGame = () => {
 
 export const useFetchGame = (gameId: string) => {
   const { token } = useUserStore();
+
   return useQuery<IFetchGameResponse, IGameError>({
     queryKey: ["game"],
     queryFn: async () => {
@@ -95,7 +98,6 @@ export const useFetchGame = (gameId: string) => {
       return data;
     },
     enabled: !!token && !!gameId,
-    staleTime: 1000 * 60 * 5,
     retry: 2,
   });
 };
@@ -145,5 +147,29 @@ export const useLaunchDice = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["game"] });
     },
+  });
+};
+
+export const postQuitGame = async (token: string) => {
+  const response = await fetch(import.meta.env.VITE_API_URL + "/game/quit", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (response.status !== 200) {
+    throw new Error("Error quitting game");
+  }
+
+  const data = await response.json();
+
+  return data;
+};
+
+export const useQuitGame = () => {
+  return useMutation<string, Error, string>({
+    mutationFn: postQuitGame,
   });
 };

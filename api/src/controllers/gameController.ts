@@ -5,6 +5,7 @@ import {
   startGameService,
 } from "../services/game.ts";
 import { validationResult } from "express-validator";
+import { updateOneUserField } from "src/services/user.ts";
 
 export const handleStartGame = async (req: Request, res: Response) => {
   try {
@@ -63,4 +64,19 @@ export const handleLaunchDice = async (req: Request, res: Response) => {
   res
     .status(200)
     .send({ message: "Dice launched", diceArray: [1, 2, 3, 4, 5] });
+};
+
+export const handleQuitGame = async (req: Request, res: Response) => {
+  console.log("Removing currentPartyId from user");
+
+  try {
+    await updateOneUserField(req.body.userId, "currentPartyId", "");
+  } catch (err) {
+    console.log("Error quitting game: ", err);
+    return res
+      .status(500)
+      .json({ message: "Internal server error", code: 500 });
+  }
+
+  res.status(200).json({ message: "Game quit" });
 };
