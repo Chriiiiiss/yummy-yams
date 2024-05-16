@@ -4,6 +4,7 @@ import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 import BackgroundBalatroImage from "/background-balatro.jpg";
 import CrtFilterImage from "/crt-filter.png";
 import ScanLineFilterImage from "/scan-line-filter.png";
+import { Toaster } from "react-hot-toast";
 
 const AppWrapper = styled.div`
   width: 100vw;
@@ -42,6 +43,7 @@ const ScanLineFilter = styled.div`
 export const Route = createRootRoute({
   component: () => (
     <AppWrapper>
+      <Toaster position="top-center" />
       <CrtFilter />
       <ScanLineFilter />
       <Outlet />

@@ -35,6 +35,7 @@ export const colorTheme: Theme<Color> = {
   },
   [Color.White]: {
     primary: "--color-theme-white",
+    secondary: "--color-theme-white-secondary",
   },
   [Color.Gray]: {
     primary: "--color-theme-gray",

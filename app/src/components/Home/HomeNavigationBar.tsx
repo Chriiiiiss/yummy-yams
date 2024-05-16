@@ -1,6 +1,9 @@
 import styled from "@emotion/styled";
 import { Color, colorTheme } from "../../pages/constant";
 import { NavigationButton } from "./NavigationButton";
+import { useUserStore } from "../../hooks/useAuth";
+import { useNavigate } from "@tanstack/react-router";
+import { useLaunchGame } from "../../hooks/useGame";
 
 const WrapperNavigationBar = styled.div`
   background-color: var(${colorTheme.gray.primary});
@@ -15,22 +18,65 @@ const WrapperNavigationBar = styled.div`
 `;
 
 export const HomeNavigationBar = () => {
+  const { reset, isConnected, token } = useUserStore();
+  const launchGame = useLaunchGame();
+  const navigate = useNavigate();
   return (
     <div className="pixel-corners--wrapper">
       <WrapperNavigationBar>
-        <NavigationButton
-          index={0}
-          isBigButton={true}
-          color={Color.Blue}
-          buttonTitle="Play"
-        />
-        <NavigationButton index={1} color={Color.Yellow} buttonTitle="OPTION" />
-        <NavigationButton index={2} color={Color.Red} buttonTitle="Quit" />
+        {isConnected && token ? (
+          <NavigationButton
+            index={0}
+            color={Color.Blue}
+            isBigButton={true}
+            buttonTitle="Play"
+            onClick={() => {
+              launchGame.mutate({ token: token });
+            }}
+          />
+        ) : (
+          <NavigationButton
+            isDisabled
+            index={0}
+            isBigButton={true}
+            buttonTitle="Play"
+          />
+        )}
+
+        {isConnected ? (
+          <NavigationButton
+            onClick={() => {
+              reset();
+            }}
+            index={2}
+            color={Color.Red}
+            buttonTitle="Logout"
+          />
+        ) : (
+          <NavigationButton
+            onClick={() => {
+              navigate({ to: "/login" });
+            }}
+            index={2}
+            color={Color.Red}
+            buttonTitle="Login"
+          />
+        )}
+        {isConnected ? (
+          <NavigationButton
+            index={1}
+            color={Color.Yellow}
+            buttonTitle="OPTION"
+          />
+        ) : (
+          <NavigationButton index={1} isDisabled buttonTitle="OPTION" />
+        )}
+
         <NavigationButton
           index={3}
           isBigButton={true}
           color={Color.Green}
-          buttonTitle="Collection"
+          buttonTitle="Classement"
         />
       </WrapperNavigationBar>
     </div>
